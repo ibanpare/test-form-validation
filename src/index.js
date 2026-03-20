@@ -6,7 +6,8 @@ const postalcode = document.getElementById("postalcode");
 const postalcodeError = document.querySelector("#postalcode + span");
 const password = document.getElementById("password");
 const passwordError = document.querySelector("#password + span");
-const confirmPassword = document.getElementById("#confirm-password");
+const confirmPassword = document.getElementById("confirm-password");
+const confirmPasswordError = document.querySelector("#confirm-password + span");
 
 function emailCheck() {
   if (email.validity.typeMismatch) {
@@ -27,6 +28,16 @@ function passwordCheck() {
   } else {
     passwordError.textContent = "";
     passwordError.className = "";
+  }
+}
+
+function confirmPasswordCheck() {
+  if (confirmPassword.value === password.value) {
+    confirmPasswordError.textContent = "";
+    confirmPasswordError.className = "";
+  } else {
+    confirmPasswordError.textContent = "The two passwords don't match";
+    confirmPasswordError.className = "error active";
   }
 }
 
@@ -57,5 +68,7 @@ email.addEventListener("input", () => emailCheck());
 email.addEventListener("focusout", () => emailCheck());
 password.addEventListener("input", () => passwordCheck());
 password.addEventListener("focusout", () => passwordCheck());
+confirmPassword.addEventListener("input", () => confirmPasswordCheck());
+confirmPassword.addEventListener("focusout", () => confirmPasswordCheck());
 postalcode.addEventListener("input", () => postalcodeCheck());
 postalcode.addEventListener("focusout", () => postalcodeCheck());
