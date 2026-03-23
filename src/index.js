@@ -9,6 +9,8 @@ const passwordError = document.querySelector("#password + span");
 const confirmPassword = document.getElementById("confirm-password");
 const confirmPasswordError = document.querySelector("#confirm-password + span");
 const form = document.querySelector("form");
+const dialog = document.getElementById("my-dialog");
+const dialogBtn = document.querySelector("dialog button");
 
 function emailCheck() {
   if (email.validity.typeMismatch) {
@@ -37,7 +39,7 @@ function passwordCheck() {
 }
 
 function confirmPasswordCheck() {
-  if (confirmPassword.value === password.value) {
+  if (confirmPassword.value !== password.value) {
     confirmPasswordError.textContent = "The two passwords don't match";
     confirmPasswordError.className = "error active";
     confirmPassword.setCustomValidity = "The two passwords don't match";
@@ -89,5 +91,9 @@ form.addEventListener("submit", (event) => {
     !postalcode.validity.valid
   ) {
     event.preventDefault();
+  } else {
+    event.preventDefault();
+    dialog.showModal();
+    dialogBtn.addEventListener("click", () => dialog.close());
   }
 });
