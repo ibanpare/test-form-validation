@@ -8,15 +8,17 @@ const password = document.getElementById("password");
 const passwordError = document.querySelector("#password + span");
 const confirmPassword = document.getElementById("confirm-password");
 const confirmPasswordError = document.querySelector("#confirm-password + span");
+const form = document.querySelector("form");
 
 function emailCheck() {
   if (email.validity.typeMismatch) {
     emailError.textContent = "This is not an email address";
     emailError.className = "error active";
-    //se mi servisse bloccare il submit potrei fare setcustomvalidity così poi faccio il check customValidity true or false
+    email.setCustomValidity = "This is not an email address";
   } else {
     emailError.textContent = "";
     emailError.className = "";
+    email.setCustomValidity = "";
   }
 }
 
@@ -25,19 +27,24 @@ function passwordCheck() {
     passwordError.textContent =
       "Please have at least eight characters, at least one letter and one number";
     passwordError.className = "error active";
+    password.setCustomValidity =
+      "Please have at least eight characters, at least one letter and one number";
   } else {
     passwordError.textContent = "";
     passwordError.className = "";
+    password.setCustomValidity = "";
   }
 }
 
 function confirmPasswordCheck() {
   if (confirmPassword.value === password.value) {
-    confirmPasswordError.textContent = "";
-    confirmPasswordError.className = "";
-  } else {
     confirmPasswordError.textContent = "The two passwords don't match";
     confirmPasswordError.className = "error active";
+    confirmPassword.setCustomValidity = "The two passwords don't match";
+  } else {
+    confirmPasswordError.textContent = "";
+    confirmPasswordError.className = "";
+    confirmPassword.setCustomValidity = "";
   }
 }
 
@@ -53,14 +60,16 @@ function postalcodeCheck() {
     de: ["^\\d{5}$", "Pretend this is German"],
     es: ["^(0[1-9]|[1-4]\\d|5[0-2])\\d{3}$", "Codigo postal incorrecto"],
   };
-  console.log("checking");
+
   const testRegEx = new RegExp(postalcodeRules[country.value][0]);
   if (testRegEx.test(postalcode.value)) {
     postalcodeError.textContent = "";
     postalcodeError.className = "";
+    postalcode.setCustomValidity = "";
   } else {
     postalcodeError.textContent = postalcodeRules[country.value][1];
     postalcodeError.className = "error active";
+    postalcode.setCustomValidity = "Postal code not valid";
   }
 }
 
@@ -72,3 +81,13 @@ confirmPassword.addEventListener("input", () => confirmPasswordCheck());
 confirmPassword.addEventListener("focusout", () => confirmPasswordCheck());
 postalcode.addEventListener("input", () => postalcodeCheck());
 postalcode.addEventListener("focusout", () => postalcodeCheck());
+form.addEventListener("submit", (event) => {
+  if (
+    !email.validity.valid ||
+    !password.validity.valid ||
+    !confirmPassword.validity.valid ||
+    !postalcode.validity.valid
+  ) {
+    event.preventDefault();
+  }
+});
